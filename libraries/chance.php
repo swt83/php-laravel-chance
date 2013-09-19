@@ -1,7 +1,7 @@
 <?php
 
 /**
- * A library to cache data based on chance instead of time.
+ * A library to reload cached data based on chance instead of time.
  *
  * @package    Chance
  * @author     Scott Travis <scott.w.travis@gmail.com>
