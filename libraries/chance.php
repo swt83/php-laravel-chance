@@ -13,43 +13,60 @@ class Chance
 {
     public static function get($variable, $chance, $function)
     {
+        // set countdown
+        $countdown = 1; // wait minimum 1 minute before dice rolls
+
         // load existing
         $cached = Cache::get($variable);
 
-        // if not existing, bail...
+        // if not existing, calculate...
         if (!$cached) {
 
             // calculate
             $value = $function();
 
-            // save
+            // save variable
             Cache::forever($variable, $value);
+
+            // save timer
+            Cache::put($variable.'_timer', 1, $countdown);
 
             // return
             return $value;
 
         }
 
-        // build pool...
-        $pool = array();
-        for ($i=0; $i<=$chance; $i++) {
-            $pool[] = $i;
-        }
+        // load timer
+        $timer = Cache::get($variable.'_timer');
 
-        // roll dice
-        $roll = rand(1, 100);
+        // if expired, roll dice...
+        if (!$timer) {
 
-        // if roll found in pool...
-        if (in_array($roll, $pool)) {
+            // build pool...
+            $pool = array();
+            for ($i=1; $i<=$chance; $i++) {
+                $pool[] = $i;
+            }
 
-            // calculate
-            $value = $function();
+            // roll dice
+            $roll = rand(1, 100);
 
-            // save
-            Cache::forever($variable, $value);
+            // if roll found in pool...
+            if (in_array($roll, $pool)) {
 
-            // return
-            return $value;
+                // calculate
+                $value = $function();
+
+                // save variable
+                Cache::forever($variable, $value);
+
+                // save timer
+                Cache::put($variable.'_timer', 1, $countdown);
+
+                // return
+                return $value;
+
+            }
 
         }
 
