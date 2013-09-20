@@ -11,11 +11,8 @@
 
 class Chance
 {
-    public static function get($variable, $chance, $function)
+    public static function get($variable, $chance, $function, $cooldown = null)
     {
-        // set countdown
-        $countdown = 1; // wait minimum 1 minute before dice rolls
-
         // load existing
         $cached = Cache::get($variable);
 
@@ -29,18 +26,21 @@ class Chance
             Cache::forever($variable, $value);
 
             // save timer
-            Cache::put($variable.'_timer', 1, $countdown);
+            if ($cooldown) Cache::put($variable.'_timer', 1, $cooldown);
 
             // return
             return $value;
 
         }
 
-        // load timer
-        $timer = Cache::get($variable.'_timer');
+        // determine if rolling dice...
+        $rolldice = true;
+        if ($cooldown) {
+            $rolldice = Cache::get($variable.'_timer') ? false : true;
+        }
 
-        // if expired, roll dice...
-        if (!$timer) {
+        // if rolling dice...
+        if ($rolldice) {
 
             // build pool...
             $pool = array();
@@ -61,7 +61,7 @@ class Chance
                 Cache::forever($variable, $value);
 
                 // save timer
-                Cache::put($variable.'_timer', 1, $countdown);
+                if ($cooldown) Cache::put($variable.'_timer', 1, $cooldown);
 
                 // return
                 return $value;
