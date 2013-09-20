@@ -29,4 +29,4 @@ $value = Chance::get('foobar', 20, function() use($bat) {
 });
 ```
 
-Call the ``get()`` method and include a variable name, a percentage probability of reload, and a closure for the calculation of the desired value.  The optinal cooldown means no dice rolls attempted for a minimum amount of time.
+Call the ``get()`` method and include a variable name, a percentage probability of reload, and a closure for the calculation of the desired value.  The optional ``cooldown`` param means no dice rolls attempted for that minimum amount of time.
