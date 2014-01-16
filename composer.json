@@ -1,0 +1,22 @@
+{
+    "name": "travis/chance",
+    "description": "A Laravel PHP library for reloading cached data based on chance instead of time.",
+    "homepage": "https://github.com/swt83/php-laravel-chance",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Scott Travis",
+            "email": "scott.w.travis@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.1.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Travis\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
